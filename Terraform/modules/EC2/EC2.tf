@@ -1,10 +1,11 @@
 resource "aws_instance" "jenkins_instance" {
-  ami               = var.ami
-  availability_zone = var.availability_zone
-  instance_type     = var.instance_type
-  security_groups   = [var.jenkins_security_group]
-  subnet_id         = var.public_subnet
-  key_name          = "devsecops_project"
+  ami                  = var.ami
+  availability_zone    = var.availability_zone
+  instance_type        = var.instance_type
+  security_groups      = [var.jenkins_security_group]
+  subnet_id            = var.public_subnet_id
+  key_name             = "devsecops_project"
+  iam_instance_profile = var.instance_profile
 
   #ansible instead of bash script
   #user_data = templatefile("./user-data.sh")
@@ -41,7 +42,7 @@ resource "aws_volume_attachment" "ebs_jenkins" {
 #  availability_zone = var.availability_zone
 #  instance_type     = var.instance_type
 #  security_groups   = [var.monitoring_security_group]
-#  subnet_id         = var.private_subnet
+#  subnet_id         = var.private_subnet_id
 #  key_name          = "devsecops_project"
 #
 #  //user_data = templatefile("./user-data.sh") ansible use
