@@ -15,14 +15,19 @@ pipeline {
 
         stage('Terraform Plan') {
             steps {
-                sh 'terraform plan'
+                dir('./Terraform') {
+                    //sh 'terraform init' backend s3 initialized
+                    sh 'terraform plan'
             }
         }
 
         stage('Apply Terraform') {
             steps {
-                sh 'terraform apply -auto-approve'
+                dir('./Terraform') {
+                    sh 'terraform apply -auto-approve'
+                }
             }
+        }
         }
 
         stage('Generate Ansible Inventory') {
