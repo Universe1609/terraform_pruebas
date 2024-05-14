@@ -20,6 +20,7 @@ pipeline {
                     sh 'terraform plan'
             }
         }
+        }
 
         stage('Apply Terraform') {
             steps {
@@ -27,7 +28,6 @@ pipeline {
                     sh 'terraform apply -auto-approve'
                 }
             }
-        }
         }
 
         stage('Generate Ansible Inventory') {
