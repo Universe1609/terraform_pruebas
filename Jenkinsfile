@@ -16,7 +16,7 @@ pipeline {
         stage('Terraform Plan') {
             steps {
                 dir('./Terraform') {
-                    //sh 'terraform init' backend s3 initialized
+                    sh 'terraform init' //backend s3 initialized
                     sh 'terraform plan'
             }
         }
