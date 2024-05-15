@@ -21,7 +21,7 @@ resource "aws_subnet" "private_subnet" {
 
 data "aws_internet_gateway" "igw" {
   filter {
-    name   = "var.igw-name"
+    name   = "attachment.vpc-id"
     values = [data.aws_vpc.main.id]
   }
 }
@@ -31,7 +31,7 @@ resource "aws_route_table" "public_route_table" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = data.aws_internet_gateway.igw.id
+    gateway_id = data.aws_internet_gateway.igw
   }
 }
 
