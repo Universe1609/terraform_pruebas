@@ -75,11 +75,15 @@ resource "aws_security_group" "jenkins_security_group" {
   ]
 
   egress = [{
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
-    prefix_list_ids = []
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    description      = "Egress"
+    ipv6_cidr_blocks = ["::/0"]
+    prefix_list_ids  = []
+    security_groups  = []
+    self             = false
     }
   ]
 }
