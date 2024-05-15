@@ -58,7 +58,7 @@ resource "aws_route_table_association" "private_rta" {
 
 resource "aws_security_group" "jenkins_security_group" {
   name   = "jenkins_security_group"
-  vpc_id = data.aws_vpc.main
+  vpc_id = data.aws_vpc.main.id
 
   ingress = [
     for port in [22, 443, 8080, 9000] : {

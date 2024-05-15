@@ -23,9 +23,6 @@ resource "aws_ebs_volume" "jenkins_ebs" {
   availability_zone = var.availability_zone
   size              = 30
   type              = "gp2"
-  tags = {
-    "project" = "todo-list"
-  }
 }
 
 resource "aws_volume_attachment" "ebs_jenkins" {
