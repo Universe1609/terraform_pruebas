@@ -18,7 +18,7 @@ module "instances" {
   public_subnet_id       = module.vpc.public_subnet_id
   private_subnet_id      = module.vpc.private_subnet_id
   jenkins_security_group = module.vpc.jenkins_security_group
-  availability_zone      = module.vpc.availability_zone_1
+  availability_zone      = "us-east-2a"
   instance_profile       = module.iam.instance_profile
 }
 

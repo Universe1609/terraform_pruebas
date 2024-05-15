@@ -26,7 +26,7 @@ resource "aws_internet_gateway" "igw" {
 resource "aws_route_table" "public_route_table" {
   vpc_id = data.aws_vpc.main.id
 
-  route = {
+  route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
@@ -62,10 +62,15 @@ resource "aws_security_group" "jenkins_security_group" {
 
   ingress = [
     for port in [22, 443, 8080, 9000] : {
-      from_port   = port
-      to_port     = port
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+      from_port       = port
+      to_port         = port
+      protocol        = "tcp"
+      cidr_blocks     = ["0.0.0.0/0"]
+      description     = "Allow inbound traffic"
+      ipv6_cidr_block = "::/0"
+      prefix_list_ids = []
+      security_groups = []
+      self            = false
     }
   ]
 
