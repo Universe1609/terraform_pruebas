@@ -23,6 +23,6 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "instance-profile" {
-  name = "Jenkins-instance-profile"
+  name = "Jenkins-instance-profile-project"
   role = aws_iam_role.iam-role.name
 }
