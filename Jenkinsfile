@@ -30,7 +30,7 @@ pipeline {
                             sh 'terraform apply -auto-approve'
                         } catch (Exception e) {
                             // If terraform apply fails, run terraform destroy to clean up
-                            echo "Error during Terraform Apply: ${e.getMessage()}"
+                            echo "Error durante Terraform Apply: ${e.getMessage()}"
                             echo "Attempting to destroy any resources that were created..."
                             sh 'terraform destroy -auto-approve'
                             // Rethrow the exception to mark the build as failed
