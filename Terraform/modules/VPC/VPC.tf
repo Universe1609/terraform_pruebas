@@ -31,7 +31,7 @@ resource "aws_route_table" "public_route_table" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = data.aws_internet_gateway.igw
+    gateway_id = data.aws_internet_gateway.igw.id
   }
 }
 
