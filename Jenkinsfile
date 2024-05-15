@@ -56,7 +56,7 @@ pipeline {
 
         stage('Run Ansible Playbook') {
             steps {
-                withCredentials([file(credentialsId: 'my-ssh-key', variable: 'SSH_KEY')]) {
+                withCredentials([file(credentialsId: 'SSH_KEY', variable: 'SSH_KEY')]) {
                     sh 'ansible-playbook -i Ansible/inventory Ansible/playbooks/ec2_jenkins.yml --private-key $SSH_KEY -u ubuntu'
                 }
             }
