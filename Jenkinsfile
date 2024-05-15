@@ -45,7 +45,11 @@ pipeline {
             steps {
                 script {
                     def ipAddress = sh(script: "terraform output -raw ec2_instance_ip", returnStdout: true).trim()
-                    writeFile file: 'Ansible/inventory', content: "[ec2_instance]\n${ipAddress} ansible_user=ubuntu ansible_ssh_private_key_file=\${SSH_KEY}"
+                    if (ipAddress == null || ipAddress.isEmpty()) {
+                        echo "IP no encontrada."
+                    } else {
+                        writeFile file: 'Ansible/inventory', text: "[ec2_instance]\n${ipAddress} ansible_user=ubuntu ansible_ssh_private_key_file=\${SSH_KEY}"
+                        }
                 }
             }
         }
