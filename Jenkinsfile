@@ -38,8 +38,7 @@ pipeline {
                             throw e
                         }
                     }
-                }
-                script {
+                    script {
                     def ipAddress = sh(script: "terraform output -raw ec2_instance_ip", returnStdout: true).trim()
                     sh 'terraform output -raw ec2_instance_ip'
                     echo "Terraform output for ec2_instance_ip: ${ipAddress}"
@@ -48,10 +47,11 @@ pipeline {
                         error("Failed to retrieve the EC2 instance IP address from Terraform output.")
                     } else {
                         def inventoryContent = "[ec2_instance]\n${ipAddress} ansible_user=ubuntu ansible_ssh_private_key_file=\${SSH_KEY}"
-                        writeFile file: 'Ansible/inventory', text: inventoryContent
+                        writeFile file: '../Ansible/inventory', text: inventoryContent
                         }
-                    sh 'cat Ansible/inventory' 
+                    sh 'cat ../Ansible/inventory' 
                     }
+                }
             }
         }
 
