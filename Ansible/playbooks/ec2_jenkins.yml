@@ -125,13 +125,15 @@
         name: helm
         classic: yes
 
-    - name: Nginx y Cerbot
+    - name: Install Nginx and Certbot
       apt:
         name:
           - nginx
           - certbot
           - python3-certbot-nginx
         state: present
+
+    - name: Start and enable Nginx
       systemd:
         name: nginx
         enabled: yes
