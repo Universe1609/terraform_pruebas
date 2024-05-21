@@ -6,7 +6,7 @@
     - name: Actualizando paquetes
       apt:
         update_cache: yes
-        upgrade: 'yes'
+        upgrade: "yes"
         force_apt_get: yes
 
     - name: Openjdk 17
@@ -22,7 +22,7 @@
           get_url:
             url: https://pkg.jenkins.io/debian/jenkins.io-2023.key
             dest: /usr/share/keyrings/jenkins-keyring.gpg
-            mode: '0644'
+            mode: "0644"
 
         - name: Añadiendo repo
           apt_repository:
@@ -59,7 +59,7 @@
         - name: Cambiar permisos del sock
           file:
             path: /var/run/docker.sock
-            mode: '0777'
+            mode: "0777"
 
     - name: Revantar contenedor sonarqube
       docker_container:
@@ -102,17 +102,19 @@
           apt_repository:
             repo: deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main
 
-        - name: Instalando Terraform 
+        - name: Instalando Terraform
           apt:
             name: terraform
             update_cache: yes
             state: present
 
-    - name: Trivy
+    - name: Trivy repository
       apt_repository:
         repo: deb https://aquasecurity.github.io/trivy-repo/deb {{ ansible_distribution_release }} main
         state: present
         filename: trivy
+
+    - name: Install Trivy
       apt:
         name: trivy
         update_cache: yes
