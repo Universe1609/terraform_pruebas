@@ -46,6 +46,7 @@ pipeline {
             steps {
                 script {
                     def ipAddress = sh(script: "terraform output -raw ec2_instance_ip", returnStdout: true).trim()
+                    echo "Terraform output for ec2_instance_ip: ${ipAddress}"
                     if (ipAddress == null || ipAddress.isEmpty()) {
                         echo "IP no encontrada."
                     } else {
