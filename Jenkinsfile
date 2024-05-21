@@ -17,6 +17,7 @@ pipeline {
             steps {
                 dir('./Terraform') {
                     sh 'terraform init' //backend s3 initialized
+                    
                     sh 'terraform plan'
             }
         }
@@ -48,7 +49,8 @@ pipeline {
                     if (ipAddress == null || ipAddress.isEmpty()) {
                         echo "IP no encontrada."
                     } else {
-                        writeFile file: 'Ansible/inventory', text: "[ec2_instance]\n${ipAddress} ansible_user=ubuntu ansible_ssh_private_key_file=\${SSH_KEY}"
+                        def inventoryContent = "[ec2_instance]\n${ipAddress} ansible_user=ubuntu ansible_ssh_private_key_file=\${SSH_KEY}"
+                        writeFile file: 'Ansible/inventory', text: inventoryContent
                         }
                 }
             }
