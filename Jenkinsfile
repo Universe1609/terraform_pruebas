@@ -65,7 +65,7 @@ pipeline {
                 dir('Terraform'){
                     script {
                         def ipAddress = sh(script: "terraform output -raw ec2_instance_ip", returnStdout: true).trim()
-                        sh "ssh-keyscan -H ${ipAddress} >> ~/.ssh/known_hosts"
+                        sh "ssh-keyscan -H ${ipAddress} >> /home/ubuntu/.ssh/known_hosts"
                     }
                 }
             }
