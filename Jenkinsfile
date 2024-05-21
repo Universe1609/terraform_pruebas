@@ -53,12 +53,10 @@ pipeline {
         stage('Generate Ansible Inventory') {
             steps {
                 script{
-                        {
-                            def inventoryContent = "[ec2_instance]\n${ipAddress} ansible_user=ubuntu ansible_ssh_private_key_file=\${SSH_KEY}"
-                            writeFile file: 'Ansible/inventory', text: inventoryContent
-                            sh 'cat Ansible/inventory'
-                            }
-                        }
+                    def inventoryContent = "[ec2_instance]\n${ipAddress} ansible_user=ubuntu ansible_ssh_private_key_file=\${SSH_KEY}"
+                    writeFile file: 'Ansible/inventory', text: inventoryContent
+                    sh 'cat Ansible/inventory'
+                }
                 sh 'cat Ansible/inventory ' 
             }
         }
