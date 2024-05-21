@@ -49,6 +49,7 @@ pipeline {
                         def inventoryContent = "[ec2_instance]\n${ipAddress} ansible_user=ubuntu ansible_ssh_private_key_file=\${SSH_KEY}"
                         writeFile file: 'Ansible/inventory', text: inventoryContent
                         }
+                    cat 'Ansible/inventory' 
                     }
                 }
             }
