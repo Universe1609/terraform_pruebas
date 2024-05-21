@@ -38,7 +38,8 @@ pipeline {
                             throw e
                         }
                     }
-                    script {
+                }
+                script {
                     def ipAddress = sh(script: "terraform output -raw ec2_instance_ip", returnStdout: true).trim()
                     sh 'terraform output -raw ec2_instance_ip'
                     echo "Terraform output for ec2_instance_ip: ${ipAddress}"
@@ -51,7 +52,6 @@ pipeline {
                         }
                     sh 'cat Ansible/inventory' 
                     }
-                }
             }
         }
 
