@@ -55,27 +55,27 @@ pipeline {
             }
         }
 
-        stage('Generate Ansible Inventory') {
-            steps {
-                sh 'cat Ansible/inventory ' 
-            }
-        }
-        stage('Add Host Key to Known Hosts') {
-            steps {
-                dir('Terraform'){
-                    script {
-                        def ipAddress = sh(script: "terraform output -raw ec2_instance_ip", returnStdout: true).trim()
-                        sh "sudo ssh-keyscan -H ${ipAddress} >> /home/ubuntu/.ssh/known_hosts"
-                    }
-                }
-            }
-        }
-        stage('Run Ansible Playbook') {
-            steps {
-                withCredentials([file(credentialsId: 'SSH_KEY', variable: 'SSH_KEY')]) {
-                    sh 'ansible-playbook -i Ansible/inventory Ansible/playbooks/ec2_jenkins.yml --private-key $SSH_KEY -u ubuntu'
-                }
-            }
-        }
+        //stage('Generate Ansible Inventory') {
+       //     steps {
+       //         sh 'cat Ansible/inventory ' 
+       //     }
+       // }
+       // stage('Add Host Key to Known Hosts') {
+       //     steps {
+       //         dir('Terraform'){
+       //             script {
+       //                 def ipAddress = sh(script: "terraform output -raw ec2_instance_ip", returnStdout: true).trim()
+       //                 sh "sudo ssh-keyscan -H ${ipAddress} >> /home/ubuntu/.ssh/known_hosts"
+       //             }
+       //         }
+       //     }
+       // }
+       // stage('Run Ansible Playbook') {
+       //     steps {
+       //         withCredentials([file(credentialsId: 'SSH_KEY', variable: 'SSH_KEY')]) {
+       //             sh 'ansible-playbook -i Ansible/inventory Ansible/playbooks/ec2_jenkins.yml --private-key $SSH_KEY -u ubuntu'
+       //         }
+       //     }
+       // }
     }
 }

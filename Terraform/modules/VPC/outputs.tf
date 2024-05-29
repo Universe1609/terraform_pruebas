@@ -9,3 +9,7 @@ output "private_subnet_id" {
 output "jenkins_security_group" {
   value = aws_security_group.jenkins_security_group.id
 }
+
+output "vpc_id" {
+  value = var.vpc_id
+}
