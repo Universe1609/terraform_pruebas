@@ -51,9 +51,12 @@ module "eks" {
     }
   }
 
-  vpc_id                   = module.vpc.vpc_id
-  subnet_ids               = ["subnet-abcde012", "subnet-bcde012a", "subnet-fghi345a"]
-  control_plane_subnet_ids = ["subnet-xyzde987", "subnet-slkjf456", "subnet-qeiru789"]
+  vpc_id = module.vpc.vpc_id
+  subnet_ids = [module.vpc.eks-vpc-pub-subnet-1,
+    module.vpc.eks-vpc-pub-subnet-2,
+    module.vpc.eks-vpc-priv-subnet-1,
+  module.vpc.eks-vpc-priv-subnet-2]
+  # control_plane_subnet_ids = ["subnet-xyzde987", "subnet-slkjf456", "subnet-qeiru789"]
 
   # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {

@@ -1,5 +1,5 @@
 variable "vpc_id" {
-  default = "vpc-03c38a56fb1854ee3"
+  default = "vpc-00effc3da53fc9014"
 }
 
 variable "availability_zone_1" {
@@ -7,4 +7,8 @@ variable "availability_zone_1" {
 }
 variable "availability_zone_2" {
   default = "us-east-2b"
+}
+
+variable "env" {
+  default = "prod"
 }

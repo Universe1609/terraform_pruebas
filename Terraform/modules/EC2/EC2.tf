@@ -15,7 +15,7 @@ resource "aws_instance" "jenkins_instance" {
     volume_type = "gp2"
   }
   tags = {
-    "name" = "${var.environment}-jenkins"
+    "Name" = "${var.environment}-jenkins"
   }
 }
 

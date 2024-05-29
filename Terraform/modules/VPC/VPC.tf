@@ -6,17 +6,74 @@ data "aws_vpc" "main" {
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = data.aws_vpc.main.id
   availability_zone       = var.availability_zone_1
-  cidr_block              = cidrsubnet(data.aws_vpc.main.cidr_block, 4, 1)
+  cidr_block              = cidrsubnet(data.aws_vpc.main.cidr_block, 8, 1)
   map_public_ip_on_launch = "true"
 
+  tags = {
+    Name = "public-subnet_1"
+  }
 }
 
 resource "aws_subnet" "private_subnet" {
   vpc_id                  = data.aws_vpc.main.id
   availability_zone       = var.availability_zone_2
-  cidr_block              = cidrsubnet(data.aws_vpc.main.cidr_block, 4, 2)
+  cidr_block              = cidrsubnet(data.aws_vpc.main.cidr_block, 8, 2)
   map_public_ip_on_launch = "false" # por defecto
 
+}
+
+resource "aws_subnet" "eks-vpc-pub-sub1" {
+  vpc_id     = data.aws_vpc.main.id
+  cidr_block = cidrsubnet(data.aws_vpc.main.cidr_block, 8, 3)
+
+  tags = {
+    Name                                           = "eks-${var.env}-pub-${var.availability_zone_1}-sub1"
+    "kubernetes.io/cluster/eks-${var.env}-cluster" = "shared"
+    "kubernetes.io/role/elb"                       = 1
+  }
+
+  availability_zone       = var.availability_zone_1
+  map_public_ip_on_launch = true
+}
+
+resource "aws_subnet" "eks-vpc-pub-sub2" {
+  vpc_id     = data.aws_vpc.main.id
+  cidr_block = cidrsubnet(data.aws_vpc.main.cidr_block, 8, 4)
+
+  tags = {
+    Name                                           = "eks-${var.env}-pub-${var.availability_zone_2}-sub2"
+    "kubernetes.io/cluster/eks-${var.env}-cluster" = "shared"
+    "kubernetes.io/role/elb"                       = 1
+  }
+
+  availability_zone       = var.availability_zone_2
+  map_public_ip_on_launch = true
+}
+
+resource "aws_subnet" "eks-vpc-priv-sub1" {
+  vpc_id     = data.aws_vpc.main.id
+  cidr_block = cidrsubnet(data.aws_vpc.main.cidr_block, 8, 5)
+
+  tags = {
+    Name                                           = "eks-${var.env}-priv-${var.availability_zone_1}-sub1"
+    "kubernetes.io/cluster/eks-${var.env}-cluster" = "shared"
+    "kubernetes.io/role/internal-elb"              = 1
+  }
+
+  availability_zone = var.availability_zone_1
+}
+
+resource "aws_subnet" "eks-vpc-priv-sub2" {
+  vpc_id     = data.aws_vpc.main.id
+  cidr_block = cidrsubnet(data.aws_vpc.main.cidr_block, 8, 6)
+
+  tags = {
+    Name                                           = "eks-${var.env}-priv-${var.availability_zone_2}-sub2"
+    "kubernetes.io/cluster/eks-${var.env}-cluster" = "shared"
+    "kubernetes.io/role/internal-elb"              = 1
+  }
+
+  availability_zone = var.availability_zone_2
 }
 
 data "aws_internet_gateway" "igw" {
