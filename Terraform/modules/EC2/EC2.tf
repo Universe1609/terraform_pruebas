@@ -8,7 +8,7 @@ resource "aws_instance" "jenkins_instance" {
   iam_instance_profile = var.instance_profile
 
   #ansible instead of bash script
-  user_data = templatefile("Terraform/modules/EC2/user-data.sh", {})
+  user_data = templatefile("./modules/EC2/user-data.sh", {})
 
   root_block_device {
     volume_size = 30
