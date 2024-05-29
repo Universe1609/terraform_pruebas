@@ -23,7 +23,7 @@ output "eks-vpc-pub-subnet-2" {
 }
 
 output "eks-vpc-priv-subnet-1" {
-  value = aws_subnet.eks-vpc-priv-sub1.ids
+  value = aws_subnet.eks-vpc-priv-sub1.id
 }
 
 output "eks-vpc-priv-subnet-2" {
