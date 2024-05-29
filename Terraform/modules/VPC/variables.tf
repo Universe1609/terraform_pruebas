@@ -1,5 +1,5 @@
 variable "vpc_id" {
-  default = "vpc-00effc3da53fc9014"
+  default = "vpc-0449e5f1151365c7f"
 }
 
 variable "availability_zone_1" {
