@@ -76,10 +76,12 @@ resource "aws_subnet" "eks-vpc-priv-sub2" {
   availability_zone = var.availability_zone_2
 }
 
-data "aws_internet_gateway" "igw" {
-  filter {
-    name   = "attachment.vpc-id"
-    values = [data.aws_vpc.main.id]
+resource "aws_internet_gateway" "igw" {
+  vpc_id = data.aws_vpc.main.id
+
+  tags = {
+    "Project" = "vote-app"
+    "Name"    = "vote-app-internet-gateway"
   }
 }
 
