@@ -3,6 +3,8 @@ data "aws_vpc" "main" {
 }
 
 #subnets
+#--------------------------------------------------------------
+
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = data.aws_vpc.main.id
   availability_zone       = var.availability_zone_1
@@ -76,6 +78,8 @@ resource "aws_subnet" "eks-vpc-priv-sub2" {
   availability_zone = var.availability_zone_2
 }
 
+#--------------------------------------------------------------
+
 resource "aws_internet_gateway" "igw" {
   vpc_id = data.aws_vpc.main.id
 
@@ -84,6 +88,26 @@ resource "aws_internet_gateway" "igw" {
     "Name"    = "vote-app-internet-gateway"
   }
 }
+
+resource "aws_eip" "eks-eip-nat" {
+  depends_on = [aws_internet_gateway.igw]
+
+  tags = {
+    "Name" = "eks-${var.env}-eip-nat"
+  }
+}
+
+resource "aws_nat_gateway" "eks-nat-gw" {
+  allocation_id = aws_eip.eks-eip-nat.id
+  subnet_id     = aws_subnet.eks-vpc-pub-sub1.id
+
+  tags = {
+    "Name" = "eks-${var.env}-nat-igw"
+  }
+}
+
+
+#--------------------------------------------------------------
 
 resource "aws_route_table" "public_route_table" {
   vpc_id = data.aws_vpc.main.id
@@ -107,6 +131,47 @@ resource "aws_route_table" "private_route_table" {
   }
 }
 
+resource "aws_route_table" "eks-vpc-pub-sub-rt" {
+  vpc_id = data.aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+
+  tags = {
+    Name = "eks-${var.env}-vpc-pub-sub-rt"
+  }
+}
+
+resource "aws_route_table" "eks-vpc-priv-sub1-rt" {
+  vpc_id = data.aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.eks-nat-gw.id
+  }
+
+  tags = {
+    Name = "eks-${var.env}-vpc-priv-sub1-rt"
+  }
+}
+
+resource "aws_route_table" "eks-vpc-priv-sub2-rt" {
+  vpc_id = data.aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.eks-nat-gw.id
+  }
+
+  tags = {
+    Name = "eks-${var.env}-vpc-priv-sub2-rt"
+  }
+}
+
+#--------------------------------------------------------------
+
 
 resource "aws_route_table_association" "public_rta" {
   subnet_id      = aws_subnet.public_subnet.id
@@ -117,6 +182,29 @@ resource "aws_route_table_association" "private_rta" {
   subnet_id      = aws_subnet.private_subnet.id
   route_table_id = aws_route_table.private_route_table.id
 }
+
+resource "aws_route_table_association" "eks-vpc-pub-sub1-rt-association" {
+  subnet_id      = aws_subnet.eks-vpc-pub-sub1.id
+  route_table_id = aws_route_table.eks-vpc-pub-sub-rt.id
+}
+
+resource "aws_route_table_association" "eks-vpc-pub-sub2-rt-association" {
+  subnet_id      = aws_subnet.eks-vpc-pub-sub2.id
+  route_table_id = aws_route_table.eks-vpc-pub-sub-rt.id
+}
+
+resource "aws_route_table_association" "eks-vpc-priv-sub1-rt-association" {
+  subnet_id      = aws_subnet.eks-vpc-priv-sub1.id
+  route_table_id = aws_route_table.eks-vpc-priv-sub1-rt.id
+}
+
+resource "aws_route_table_association" "eks-vpc-priv-sub2-rt-association" {
+  subnet_id      = aws_subnet.eks-vpc-priv-sub2.id
+  route_table_id = aws_route_table.eks-vpc-priv-sub2-rt.id
+}
+
+#--------------------------------------------------------------
+
 
 resource "aws_security_group" "jenkins_security_group" {
   name   = "jenkins_security_group"
