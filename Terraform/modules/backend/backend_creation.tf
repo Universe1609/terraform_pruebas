@@ -1,5 +1,5 @@
 #resource "aws_dynamodb_table" "todo-list-devsecops-table" {
-#  name           = "todo-list-devsecops-table"
+#  name           = "voteapp-devsecops-table"
 #  read_capacity  = 1
 #  write_capacity = 1
 #  hash_key       = "LockID"
@@ -10,14 +10,14 @@
 #  }
 #
 #  tags = {
-#    "project" = "todo-list"
+#    "project" = "voteapp"
 #  }
 #}
 
 #resource "aws_s3_bucket" "todo-list-devsecops-project" {
-#  bucket = "todo-list-devsecops-project"
+#  bucket = "voteapp-devsecops-project"
 #  tags = {
-#    "project" = "todo-list"
+#    "project" = "voteapp"
 #  }
 #}
 
